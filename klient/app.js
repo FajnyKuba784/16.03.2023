@@ -1,41 +1,50 @@
+async function getUser(){
+    const login = document.getElementById("login").value
+    const passw = document.getElementById("password").value
 
 
-async function sprawdz(){
-
-    const data = await fetch("http://localhost:3000/login")
-    const json = data.json()
-
-    
+    const data = await fetch(`http://localhost:3001/get/${login}/${passw}`)
+    const json = await data.json()
+    console.log(json)
 
 
-}
-
-function check(){
-
-    const admin = localStorage.getItem("login")
-    const div = document.getElementById("menu")
-    const button = document.createElement("button")
-
- 
-        if(admin!="admin") window.location.href = "login.html"
-        
-
-    
-
-    if(admin=="admin"){
-
-        button.innerHTML = "Wyloguj"
-        button.setAttribute("onclick","przycisk()")
-        div.appendChild(button)
-
+    if(json.user != undefined){
+        localStorage.setItem("upr", JSON.stringify(json))
 
 
     }
+    else {
+        localStorage.setItem("upr", "false")
+
+    }
+
+
 }
 
-function przycisk(){
 
-    localStorage.removeItem("login")
+function checkUser(){
+
+    const user = JSON.parse(localStorage.getItem("upr"))
+
+    const url = window.location.href
+
+    if(user.upr != "admin"&& url.includes("admin.html")){
+        window.location.href = "login.html"
+    }
+
+
+}
+
+function sprawdz(){
+
+    const user = JSON.parse(localStorage.getItem("upr"))
+
+    const url = window.location.href
+
+    if(user.upr != "admin" && url.includes("user.html") && user.upr !="user" ){
+
+        window.location.href = "login.html"
+    }
 
 
 }
